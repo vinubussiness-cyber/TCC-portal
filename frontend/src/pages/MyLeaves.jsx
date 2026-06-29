@@ -1,0 +1,90 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+function MyLeaves() {
+
+    const [leaves, setLeaves] = useState([]);
+
+    useEffect(() => {
+
+        loadLeaves();
+
+    }, []);
+
+    const loadLeaves = async () => {
+
+        const userId =
+            localStorage.getItem("userId");
+
+        const res = await axios.get(
+            `http://localhost:5000/api/leaves/employee/${userId}`
+        );
+
+        setLeaves(res.data);
+    };
+
+    const formatDate = (date) =>
+        new Date(date).toLocaleDateString("en-GB");
+
+    return (
+        <div style={{ padding: "20px" }}>
+
+            <h2>My Leave Requests</h2>
+
+            <table border="1">
+
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {leaves.map((leave) => (
+
+                        <tr key={leave.id}>
+
+                            <td>
+                                {leave.leave_type}
+                            </td>
+
+                            <td>
+                                {formatDate(
+                                    leave.start_date
+                                )}
+                            </td>
+
+                            <td>
+                                {formatDate(
+                                    leave.end_date
+                                )}
+                            </td>
+
+                            <td>
+                                {leave.reason}
+                            </td>
+
+                            <td>
+                                {leave.status === "Approved" && "🟢 Approved"}
+                                {leave.status === "Rejected" && "🔴 Rejected"}
+                                {leave.status === "Pending" && "🟡 Pending"}    
+                            </td>
+
+                        </tr>
+
+                    ))}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    );
+}
+
+export default MyLeaves;
