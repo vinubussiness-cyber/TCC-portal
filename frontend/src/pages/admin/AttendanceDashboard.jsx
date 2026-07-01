@@ -6,7 +6,7 @@ import Navbar from "../../components/Navbar";
 import { FiDownload } from "react-icons/fi";
 
 function AttendanceDashboard() {
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState([]); 
 
   const loadAttendance = async () => {
     const res = await axios.get("http://localhost:5000/api/attendance/report");
