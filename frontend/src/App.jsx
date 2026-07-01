@@ -7,7 +7,7 @@ import DailyUpdate from './pages/DailyUpdate';
 import LeavePage from './pages/LeavePage';
 import LeaveRequests from './pages/admin/LeaveRequests';
 import MyLeaves from './pages/MyLeaves';
-import TaskAssign from './pages/admin/TAskAssign';
+import TaskAssign from './pages/admin/TaskAssign';
 import EmployeeTasks from './pages/EmployeeTasks';
 import TaskMonitor from './pages/admin/TaskMonitor';
 import AttendanceDashboard from './pages/admin/AttendanceDAshboard';
