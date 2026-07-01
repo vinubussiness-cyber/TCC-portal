@@ -1,136 +1,83 @@
 import { useState } from "react";
 import axios from "axios";
+import { FiBriefcase } from "react-icons/fi";
 
 function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
 
     try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+      });
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email,
-          password
-        }
-      );
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.user.role);
+      localStorage.setItem("name", res.data.user.name);
+      localStorage.setItem("userId", res.data.user.id);
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
-
-      localStorage.setItem(
-        "role",
-        res.data.user.role
-      );
-
-      localStorage.setItem(
-        "name",
-        res.data.user.name
-      );
-
-      localStorage.setItem(
-        "userId",
-        res.data.user.id
-      );
-
-      // await axios.post(
-      //   "http://localhost:5000/api/attendance/login",
-      //   {
-      //     employee_id:
-      //       res.data.user.id
-      //   }
-      // );
-
-
-      alert(
-        `Welcome ${res.data.user.name}!`
-      );
+      alert(`Welcome ${res.data.user.name}!`);
 
       if (res.data.user.role === "admin") {
-        window.location.href =
-          "/admin/dashboard";
+        window.location.href = "/admin/dashboard";
       } else {
-        window.location.href =
-          "/employee/dashboard";
+        window.location.href = "/employee/dashboard";
       }
-
     } catch (err) {
-      console.log(err)
+      console.log(err);
 
-      if(err.response){
-          console.log("Backend Response:", err.response.data)
-        alert (
-        `Error: ${JSON.stringify(err.response.data)}`
-        );
-      } else{
+      if (err.response) {
+        console.log("Backend Response:", err.response.data);
+        alert(`Error: ${JSON.stringify(err.response.data)}`);
+      } else {
         alert("Server Connection Error");
-      }     
+      }
     }
-
   };
 
- 
   return (
-    <div style={{
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    }}>
-      <form
-        onSubmit={handleLogin}
-        style={{
-          width: "350px",
-          padding: "20px",
-          border: "1px solid #ddd"
-        }}
-      >
-        <h2>Employee Portal</h2>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-logo">
+          <div className="login-logo-icon">
+            <FiBriefcase />
+          </div>
+          <h2>Employee Portal</h2>
+          <p className="login-subtitle">Sign in to your workspace</p>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "10px"
-          }}
-        />
+        <form className="login-form" onSubmit={handleLogin}>
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <input
+              className="form-input"
+              type="email"
+              placeholder="you@company.com"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "10px"
-          }}
-        />
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input
+              className="form-input"
+              type="password"
+              placeholder="Enter your password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "10px"
-          }}
-        >
-          Login
-        </button>
+          <button className="btn btn-primary btn-full" type="submit">
+            Sign In
+          </button>
+        </form>
 
-      </form>
+        <p className="login-footer">TheCadCompany Employee Management System</p>
+      </div>
     </div>
   );
 }

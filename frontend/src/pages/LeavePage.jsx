@@ -1,147 +1,100 @@
 import { useState } from "react";
 import axios from "axios";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 
 function LeavePage() {
+  const [leaveType, setLeaveType] = useState("Casual");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [reason, setReason] = useState("");
 
-    const [leaveType, setLeaveType] =
-        useState("Casual");
+  const applyLeave = async (e) => {
+    e.preventDefault();
 
-    const [startDate, setStartDate] =
-        useState("");
+    try {
+      await axios.post("http://localhost:5000/api/leaves/apply", {
+        employee_id: localStorage.getItem("userId"),
+        leave_type: leaveType,
+        start_date: startDate,
+        end_date: endDate,
+        reason,
+      });
 
-    const [endDate, setEndDate] =
-        useState("");
+      alert("Leave Request Submitted");
+    } catch (err) {
+      console.log(err);
+      alert("Failed To Submit Leave");
+    }
+  };
 
-    const [reason, setReason] =
-        useState("");
-
-    const applyLeave = async (e) => {
-
-        e.preventDefault();
-
-        try {
-
-            await axios.post(
-                "http://localhost:5000/api/leaves/apply",
-                {
-                    employee_id:
-                        localStorage.getItem("userId"),
-
-                    leave_type:
-                        leaveType,
-
-                    start_date:
-                        startDate,
-
-                    end_date:
-                        endDate,
-
-                    reason
-                }
-            );
-
-            alert(
-                "Leave Request Submitted"
-            );
-
-        } catch (err) {
-
-            console.log(err);
-
-            alert(
-                "Failed To Submit Leave"
-            );
-
-        }
-    };
-
-    return (
-        <div style={{ padding: "20px" }}>
-
+  return (
+    <div className="app-layout">
+      <Sidebar />
+      <div className="main-content">
+        <Navbar />
+        <div className="page-container animate-fade-in">
+          <div className="page-header">
             <h2>Apply Leave</h2>
+            <p>Submit a new leave request for approval</p>
+          </div>
 
+          <div className="form-card">
             <form onSubmit={applyLeave}>
-
-                <label>
-                    Leave Type
-                </label>
-
-                <br />
-
+              <div className="form-group">
+                <label className="form-label">Leave Type</label>
                 <select
-                    value={leaveType}
-                    onChange={(e)=>
-                        setLeaveType(
-                            e.target.value
-                        )
-                    }
+                  className="form-select"
+                  value={leaveType}
+                  onChange={(e) => setLeaveType(e.target.value)}
                 >
-                    <option>Casual</option>
-                    <option>Sick</option>
-                    <option>WFH</option>
-                    <option>Half Day</option>
+                  <option>Casual</option>
+                  <option>Sick</option>
+                  <option>WFH</option>
+                  <option>Half Day</option>
                 </select>
+              </div>
 
-                <br /><br />
-
-                <label>
-                    Start Date
-                </label>
-
-                <br />
-
+              <div className="form-group">
+                <label className="form-label">Start Date</label>
                 <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e)=>
-                        setStartDate(
-                            e.target.value
-                        )
-                    }
+                  className="form-input"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                 />
+              </div>
 
-                <br /><br />
-
-                <label>
-                    End Date
-                </label>
-
-                <br />
-
+              <div className="form-group">
+                <label className="form-label">End Date</label>
                 <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e)=>
-                        setEndDate(
-                            e.target.value
-                        )
-                    }
+                  className="form-input"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                 />
+              </div>
 
-                <br /><br />
-
+              <div className="form-group">
+                <label className="form-label">Reason</label>
                 <textarea
-                    placeholder="Reason"
-                    value={reason}
-                    onChange={(e)=>
-                        setReason(
-                            e.target.value
-                        )
-                    }
-                    rows="4"
-                    cols="40"
+                  className="form-textarea"
+                  placeholder="Reason"
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  rows="4"
                 />
+              </div>
 
-                <br /><br />
-
-                <button type="submit">
-                    Apply Leave
-                </button>
-
+              <button className="btn btn-primary btn-full" type="submit">
+                Apply Leave
+              </button>
             </form>
-
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default LeavePage;

@@ -1,198 +1,151 @@
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import Sidebar from "../../components/Sidebar";
+import Navbar from "../../components/Navbar";
 
 function TaskAssign() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
+  const [priority, setPriority] = useState("Medium");
+  const [dueDate, setDueDate] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const [assignAll, setAssignAll] = useState(false);
 
-    const [title, setTitle] = useState("");
+  const assignTask = async (e) => {
+    e.preventDefault();
 
-    const [description, setDescription] = useState("");
+    try {
+      if (!assignAll && !assignedTo) {
+        alert("Please select an employee");
+        return;
+      }
 
-    const [assignedTo, setAssignedTo] = useState("");
+      await axios.post("http://localhost:5000/api/tasks/create", {
+        title,
+        description,
+        assigned_by: localStorage.getItem("userId"),
+        assigned_to: assignAll ? "ALL" : assignedTo,
+        priority,
+        due_date: dueDate,
+      });
 
-    const [priority, setPriority] = useState("Medium");
+      alert("Task Assigned");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    const [dueDate, setDueDate] = useState("");
+  useEffect(() => {
+    loadEmployees();
+  }, []);
 
-    const [employees, setEmployees] = useState([]);
+  const loadEmployees = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/users/employees");
+      setEmployees(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    const [assignAll, setAssignAll] = useState(false);
+  useEffect(() => {
+    loadEmployees();
+  }, []);
 
-    const assignTask = async (e) => {
+  return (
+    <div className="app-layout">
+      <Sidebar />
+      <div className="main-content">
+        <Navbar />
+        <div className="page-container animate-fade-in">
+          <div className="page-header">
+            <h2>Assign Task</h2>
+            <p>Create and assign tasks to employees</p>
+          </div>
 
-        e.preventDefault();
-
-        try {
-
-            if (!assignAll && !assignedTo) {
-               alert("Please select an employee");
-            return;
-}
-
-            await axios.post(
-                "http://localhost:5000/api/tasks/create",
-                {
-                    title,
-                    description,
-                    assigned_by:
-                        localStorage.getItem("userId"),
-
-                    assigned_to:
-                    assignAll
-                    ? "ALL"
-                    : assignedTo,
-
-
-                    priority,
-
-                    due_date:
-                        dueDate
-                }
-            );
-
-            alert(
-                "Task Assigned"
-            );
-
-        } catch (err) {
-            console.log(err);
-        };
-
-    };
-
-
-
-        useEffect(() => {
-            loadEmployees();
-        }, []);
-
-        const loadEmployees = async () => {
-            try {
-                const res = await axios.get(
-                    "http://localhost:5000/api/users/employees"
-                );
-                setEmployees(res.data);
-            } catch(err) {
-                console.log(err);
-            }
-        };
-
-        useEffect(() => {
-            loadEmployees();
-        }, []);
-
-
-    return (
-        <div style={{ padding: "30px" }}>
-
-            <h2>
-                Assign Task
-            </h2>
-
+          <div className="form-card">
             <form onSubmit={assignTask}>
-
+              <div className="form-group">
+                <label className="form-label">Task Title</label>
                 <input
-                    placeholder="Task Title"
-                    value={title}
-                    onChange={(e)=>
-                        setTitle(
-                            e.target.value
-                        )
-                    }
+                  className="form-input"
+                  placeholder="Task Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
+              </div>
 
-                <br /><br />
-
+              <div className="form-group">
+                <label className="form-label">Description</label>
                 <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e)=>
-                        setDescription(
-                            e.target.value
-                        )
-                    }
+                  className="form-textarea"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
+              </div>
 
-                <br /><br />
-
-
-                <label>
-                <input
+              <div className="form-group">
+                <label className="form-checkbox-label">
+                  <input
                     type="checkbox"
                     checked={assignAll}
-                    onChange={(e)=>
-                        setAssignAll(
-                            e.target.checked
-                        )
-                    }
-                />
+                    onChange={(e) => setAssignAll(e.target.checked)}
+                  />
+                  Assign To All Employees
+                </label>
+              </div>
 
-                Assign To All Employees
-            </label> <br />
-
+              <div className="form-group">
+                <label className="form-label">Employee</label>
                 <select
-                    value={assignedTo}
-                    disabled={assignAll}
-                    onChange={(e)=>
-                        setAssignedTo(
-                            e.target.value
-                        )
-                    }
+                  className="form-select"
+                  value={assignedTo}
+                  disabled={assignAll}
+                  onChange={(e) => setAssignedTo(e.target.value)}
                 >
-
-                    <option value="">
-                        Select Employee
+                  <option value="">Select Employee</option>
+                  {employees.map((emp) => (
+                    <option key={emp.id} value={emp.id}>
+                      {emp.name}
                     </option>
-
-                    {employees.map((emp) => (
-
-                        <option
-                            key={emp.id}
-                            value={emp.id}
-                        >
-                            {emp.name}
-                        </option>
-
-                    ))}
-
+                  ))}
                 </select>
+              </div>
 
-                <br /><br />
-
+              <div className="form-group">
+                <label className="form-label">Priority</label>
                 <select
-                    value={priority}
-                    onChange={(e)=>
-                        setPriority(
-                            e.target.value
-                        )
-                    }
+                  className="form-select"
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
                 >
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
                 </select>
+              </div>
 
-                <br /><br />
-
+              <div className="form-group">
+                <label className="form-label">Due Date</label>
                 <input
-                    type="date"
-                    value={dueDate}
-                    onChange={(e)=>
-                        setDueDate(
-                            e.target.value
-                        )
-                    }
+                  className="form-input"
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
                 />
+              </div>
 
-                <br /><br />
-
-                <button type="submit">
-                    Assign Task
-                </button>
-
+              <button className="btn btn-primary btn-full" type="submit">
+                Assign Task
+              </button>
             </form>
-
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default TaskAssign;

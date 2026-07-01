@@ -1,18 +1,2 @@
-.blink-dot {
-    color: #56e477;
-    animation: blink 4s infinite;
-}
-
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.2;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
+/* Legacy page styles — migrated to /src/styles/ */
+/* Kept for reference; global styles handle theming via index.css */

@@ -3,217 +3,75 @@ import Navbar from "../../components/Navbar";
 import DashboardCard from "../../components/DashboardCard.jsx";
 import { useEffect, useState } from "react";
 import API from "../../api/axios.js";
+import {
+  FiUsers,
+  FiUserCheck,
+  FiCalendar,
+  FiList,
+  FiCheckCircle,
+} from "react-icons/fi";
 
 function AdminDashboard() {
+  const [stats, setStats] = useState({});
 
-  const [stats, setStats] =
-        useState({});
+  const loadStats = async () => {
+    const res = await API.get("/dashboard/stats");
+    setStats(res.data);
+  };
 
-    const loadStats = async () => {
-
-        const res = await API.get(
-            "/dashboard/stats"
-        );
-
-        setStats(res.data);
-    };
-
-    useEffect(() => {
-
-        loadStats();
-
-    }, []);
-
-    const cardStyle = {
-        width: "220px",
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        textAlign: "center",
-        margin: "10px"
-    };
-
-    
+  useEffect(() => {
+    loadStats();
+  }, []);
 
   return (
-    <div style={{ display: "flex" }}>
-
+    <div className="app-layout">
       <Sidebar />
 
-      <div style={{ flex: 1 }}>
+      <div className="main-content">
+        <Navbar />
 
-      <Navbar />
+        <div className="page-container animate-fade-in">
+          <div className="page-header">
+            <h2>Admin Dashboard</h2>
+            <p>Overview of your organization at a glance</p>
+          </div>
 
-
-
-        <div style={{ padding: "20px" }}>
-
-            <h2>
-                Admin Dashboard
-            </h2>
-
-
-            <div style={{
-                display: "flex",
-                flexWrap: "wrap"
-            }}>
-
-                <div style={cardStyle}>
-                    <h3>
-                        Total Employees
-                    </h3>
-                    <h1>
-                        {stats.totalEmployees}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3>
-                        Present Today
-                    </h3>
-                    <h1>
-                        {stats.presentToday}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3>
-                        Pending Leaves
-                    </h3>
-                    <h1>
-                        {stats.pendingLeaves}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3>
-                        Open Tasks
-                    </h3>
-                    <h1>
-                        {stats.openTasks}
-                    </h1>
-                </div>
-
-                <div style={cardStyle}>
-                    <h3>
-                        Completed Tasks
-                    </h3>
-                    <h1>
-                        {stats.completedTasks}
-                    </h1>
-                </div>
-
-            </div>
-
+          <div className="cards-grid">
+            <DashboardCard
+              title="Total Employees"
+              value={stats.totalEmployees}
+              icon={<FiUsers />}
+              description="Registered in system"
+            />
+            <DashboardCard
+              title="Present Today"
+              value={stats.presentToday}
+              icon={<FiUserCheck />}
+              description="Currently checked in"
+            />
+            <DashboardCard
+              title="Pending Leaves"
+              value={stats.pendingLeaves}
+              icon={<FiCalendar />}
+              description="Awaiting approval"
+            />
+            <DashboardCard
+              title="Open Tasks"
+              value={stats.openTasks}
+              icon={<FiList />}
+              description="Active assignments"
+            />
+            <DashboardCard
+              title="Completed Tasks"
+              value={stats.completedTasks}
+              icon={<FiCheckCircle />}
+              description="Finished this period"
+            />
+          </div>
         </div>
-
       </div>
-      
-
     </div>
   );
 }
 
 export default AdminDashboard;
-
-
-
-
-
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-
-// function AdminDashboard() {
-
-//     const [stats, setStats] =
-//         useState({});
-
-//     const loadStats = async () => {
-
-//         const res = await axios.get(
-//             "http://localhost:5000/api/dashboard/stats"
-//         );
-
-//         setStats(res.data);
-//     };
-
-//     useEffect(() => {
-
-//         loadStats();
-
-//     }, []);
-
-//     const cardStyle = {
-//         width: "220px",
-//         padding: "20px",
-//         border: "1px solid #ddd",
-//         borderRadius: "10px",
-//         textAlign: "center",
-//         margin: "10px"
-//     };
-
-//     return (
-
-//         <div style={{ padding: "20px" }}>
-
-//             <h2>
-//                 Admin Dashboard
-//             </h2>
-
-//             <div style={{
-//                 display: "flex",
-//                 flexWrap: "wrap"
-//             }}>
-
-//                 <div style={cardStyle}>
-//                     <h3>
-//                         Total Employees
-//                     </h3>
-//                     <h1>
-//                         {stats.totalEmployees}
-//                     </h1>
-//                 </div>
-
-//                 <div style={cardStyle}>
-//                     <h3>
-//                         Present Today
-//                     </h3>
-//                     <h1>
-//                         {stats.presentToday}
-//                     </h1>
-//                 </div>
-
-//                 <div style={cardStyle}>
-//                     <h3>
-//                         Pending Leaves
-//                     </h3>
-//                     <h1>
-//                         {stats.pendingLeaves}
-//                     </h1>
-//                 </div>
-
-//                 <div style={cardStyle}>
-//                     <h3>
-//                         Open Tasks
-//                     </h3>
-//                     <h1>
-//                         {stats.openTasks}
-//                     </h1>
-//                 </div>
-
-//                 <div style={cardStyle}>
-//                     <h3>
-//                         Completed Tasks
-//                     </h3>
-//                     <h1>
-//                         {stats.completedTasks}
-//                     </h1>
-//                 </div>
-
-//             </div>
-
-//         </div>
-//     );
-// }
-
-// export default AdminDashboard;

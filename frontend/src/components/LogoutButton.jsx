@@ -1,16 +1,6 @@
-import axios from "axios";
-
-function LogoutButton() {
-
+function LogoutButton({ className = "logout-btn" }) {
   const logout = async () => {
-
-    const employeeId =
-      localStorage.getItem("userId");
-
-
-    alert(
-      "Greetings"
-    );
+    alert("Greetings");
 
     localStorage.clear();
 
@@ -18,7 +8,7 @@ function LogoutButton() {
   };
 
   return (
-    <button onClick={logout}>
+    <button className={className} onClick={logout}>
       Logout
     </button>
   );

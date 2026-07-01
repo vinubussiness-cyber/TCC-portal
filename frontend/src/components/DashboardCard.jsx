@@ -1,17 +1,10 @@
-function DashboardCard({ title, value }) {
-
+function DashboardCard({ title, value, icon, description }) {
   return (
-    <div
-      style={{
-        background: "white",
-        padding: "20px",
-        borderRadius: "10px",
-        boxShadow: "0 2px 5px rgba(0,0,0,.1)"
-      }}
-    >
-      <h4>{title}</h4>
-      <h2>{value}</h2>
-
+    <div className="dashboard-card animate-slide-up">
+      {icon && <div className="dashboard-card__icon">{icon}</div>}
+      <h4 className="dashboard-card__title">{title}</h4>
+      <h2 className="dashboard-card__value">{value ?? "—"}</h2>
+      {description && <p className="dashboard-card__desc">{description}</p>}
     </div>
   );
 }
