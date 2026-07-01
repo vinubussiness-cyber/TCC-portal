@@ -10,7 +10,7 @@ import MyLeaves from './pages/MyLeaves';
 import TaskAssign from './pages/admin/TaskAssign';
 import EmployeeTasks from './pages/EmployeeTasks';
 import TaskMonitor from './pages/admin/TaskMonitor';
-import AttendanceDashboard from './pages/admin/AttendanceDAshboard';
+import AttendanceDashboard from './pages/admin/AttendanceDashboard';
 import Attendance from './pages/admin/Attendance';
 import Employees from './pages/admin/Employee';
 import EmployeeDetails from './pages/admin/ExployeeDetails';
