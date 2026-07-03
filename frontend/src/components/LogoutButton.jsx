@@ -1,8 +1,8 @@
 import { Navigate, useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 
 function LogoutButton({ className = "logout-btn" }) {
+  const navigate = useNavigate();
   const logout = async () => {
     alert("Greetings");
 
