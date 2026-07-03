@@ -2,10 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 import { FiBriefcase } from "react-icons/fi";
 import { backend_url } from "../common";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ function Login() {
       if (res.data.user.role === "admin") {
         window.location.href = "/admin/dashboard";
       } else {
-        window.location.href = "/employee/dashboard";
+        navigate("/employee/dashboard");;
       }
     } catch (err) {
       console.log(err);
