@@ -26,9 +26,9 @@ function Login() {
       alert(`Welcome ${res.data.user.name}!`);
 
       if (res.data.user.role === "admin") {
-        window.location.href = "/admin/dashboard";
+        navigate ("/admin/dashboard");
       } else {
-        navigate("/employee/dashboard");;
+        navigate("/employee/dashboard");
       }
     } catch (err) {
       console.log(err);
