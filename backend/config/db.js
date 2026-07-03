@@ -11,7 +11,7 @@ const db = mysql.createPool({
     ssl:
         process.env.DB_SSL_MODE === "true" ?
             {
-                ca: fs.readFileSync("./ca.pem")
+                ca: fs.readFileSync(path.join(__dirname, "ca.pem"))
             }
             : undefined
 })
