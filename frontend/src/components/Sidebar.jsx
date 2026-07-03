@@ -11,6 +11,7 @@ import {
   FiList,
   FiUser,
 } from "react-icons/fi";
+import logo from "../assets/TCC-logo.jpeg";
 
 function Sidebar() {
   const role = localStorage.getItem("role");
@@ -47,7 +48,7 @@ function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <img className="tcc-logo" src="/src/assets/TCC-logo.jpeg" alt="Company logo" />
+        <img className="tcc-logo" src={logo} alt="Company logo" />
         <span className="sidebar-brand">TheCadCompany</span>
       </div>
 
