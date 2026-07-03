@@ -1,11 +1,13 @@
-
+import "dotenv/config"
 const mysql = require('mysql2');
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Prem@2003',
-    database: 'tcc_employee_portal'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    ssl:process.env.DB_SSL_MODE
 })
 
 module.exports = db;
