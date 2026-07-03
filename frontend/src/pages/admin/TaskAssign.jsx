@@ -21,7 +21,7 @@ function TaskAssign() {
         return;
       }
 
-      await axios.post("http://localhost:5000/api/tasks/create", {
+      await axios.post(`${backend_url}/tasks/create`, {
         title,
         description,
         assigned_by: localStorage.getItem("userId"),
@@ -42,7 +42,7 @@ function TaskAssign() {
 
   const loadEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/employees");
+      const res = await axios.get(`${backend_url}/users/employees`);
       setEmployees(res.data);
     } catch (err) {
       console.log(err);

@@ -9,7 +9,7 @@ function AttendanceDashboard() {
   const [records, setRecords] = useState([]); 
 
   const loadAttendance = async () => {
-    const res = await axios.get("http://localhost:5000/api/attendance/report");
+    const res = await axios.get(`  ${backend_url}/attendance/report`);
     setRecords(res.data);
   };
 

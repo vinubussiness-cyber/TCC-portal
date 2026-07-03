@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { FiBriefcase } from "react-icons/fi";
+import { backend_url } from "../common";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post(`${backend_url}/auth/login`, {
         email,
         password,
       });

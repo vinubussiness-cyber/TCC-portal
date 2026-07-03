@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { backend_url } from "../common";
 
 function EmployeeTasks() {
   const [tasks, setTasks] = useState([]);
@@ -9,7 +10,7 @@ function EmployeeTasks() {
   const loadTasks = async () => {
     const userId = localStorage.getItem("userId");
     const res = await axios.get(
-      `http://localhost:5000/api/tasks/employee/${userId}`
+      `${backend_url}/tasks/employee/${userId}`
     );
     setTasks(res.data);
   };
@@ -19,7 +20,7 @@ function EmployeeTasks() {
   }, []);
 
   const updateStatus = async (taskId, status) => {
-    await axios.put("http://localhost:5000/api/tasks/status", {
+    await axios.put(`${backend_url}/tasks/status`, {
       taskId,
       status,
     });

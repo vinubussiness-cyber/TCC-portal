@@ -8,7 +8,7 @@ function Employees() {
   const [employees, setEmployees] = useState([]);
 
   const loadEmployees = async () => {
-    const res = await axios.get("http://localhost:5000/api/users/employees");
+    const res = await axios.get(`${backend_url}/users/employees`);
     setEmployees(res.data);
   };
 

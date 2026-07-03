@@ -9,7 +9,7 @@ function DailyReportsDashboard() {
   const [selectedDate, setSelectedDate] = useState("");
 
   const loadReports = async () => {
-    let url = "http://localhost:5000/api/reports/all";
+    let url = `${backend_url}/reports/all`;
 
     if (selectedDate) {
       url += `?date=${selectedDate}`;

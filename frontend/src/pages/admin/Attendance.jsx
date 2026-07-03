@@ -16,7 +16,7 @@ function Attendance() {
 
   const loadAttendance = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/attendance/today/${employeeId}`
+      `${backend_url}/attendance/today/${employeeId}`
     );
     setAttendance(res.data);
   };
@@ -26,14 +26,14 @@ function Attendance() {
   }, []);
 
   const startWork = async () => {
-    await axios.post("http://localhost:5000/api/attendance/login", {
+    await axios.post(`${backend_url}/attendance/login`, {
       employee_id: employeeId,
     });
     loadAttendance();
   };
 
   const endWork = async () => {
-    await axios.post("http://localhost:5000/api/attendance/logout", {
+    await axios.post(`${backend_url}/attendance/logout`, {
       employee_id: employeeId,
     });
     loadAttendance();
@@ -41,7 +41,7 @@ function Attendance() {
 
   const submitEODAndLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/reports/submit", {
+      await axios.post(`${backend_url}/reports/submit`, {
         employee_id: employeeId,
         work_done: tasksCompleted,
         tasks_completed: tasksCompleted,
@@ -50,7 +50,7 @@ function Attendance() {
         tomorrow_plan: tomorrowPlan,
       });
 
-      await axios.post("http://localhost:5000/api/attendance/logout", {
+      await axios.post(`${backend_url}/attendance/logout`, {
         employee_id: employeeId,
       });
 

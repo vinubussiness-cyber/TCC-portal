@@ -10,7 +10,7 @@ function EmployeeDetails() {
 
   const loadData = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/users/employee/${id}`
+      `${backend_url}/users/employee/${id}`
     );
     setData(res.data);
   };

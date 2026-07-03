@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { backend_url } from "../common";
 
 function DailyUpdate() {
   const [workDone, setWorkDone] = useState("");
@@ -13,7 +14,7 @@ function DailyUpdate() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/reports/submit", {
+      await axios.post(`${backend_url}/reports/submit`, {
         employee_id: localStorage.getItem("userId"),
         work_done: workDone,
         hours_worked: hoursWorked,

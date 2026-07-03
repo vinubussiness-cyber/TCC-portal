@@ -8,7 +8,7 @@ function TaskMonitor() {
 
   const loadTasks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/tasks/all");
+      const res = await axios.get(`${backend_url}/tasks/all`);
       setTasks(res.data);
     } catch (err) {
       console.log(err);

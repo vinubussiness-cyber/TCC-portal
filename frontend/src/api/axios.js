@@ -1,9 +1,10 @@
 
 
 import axios from "axios";
+import { backend_url } from "../common";
 
 const API = axios.create({
-    baseURL: "http://localhost:5000/api"
+    baseURL: backend_url
 });
 
 API.interceptors.request.use(

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { backend_url } from "../common";
 
 function MyLeaves() {
   const [leaves, setLeaves] = useState([]);
@@ -13,7 +14,7 @@ function MyLeaves() {
   const loadLeaves = async () => {
     const userId = localStorage.getItem("userId");
     const res = await axios.get(
-      `http://localhost:5000/api/leaves/employee/${userId}`
+      `${backend_url}/leaves/employee/${userId}`
     );
     setLeaves(res.data);
   };

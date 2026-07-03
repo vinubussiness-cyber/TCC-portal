@@ -7,7 +7,7 @@ function LeaveRequests() {
   const [leaves, setLeaves] = useState([]);
 
   const loadLeaves = async () => {
-    const res = await axios.get("http://localhost:5000/api/leaves/all");
+    const res = await axios.get(`${backend_url}/leaves/all`);
     setLeaves(res.data);
   };
 
@@ -16,7 +16,7 @@ function LeaveRequests() {
   }, []);
 
   const updateStatus = async (id, status) => {
-    await axios.put("http://localhost:5000/api/leaves/status", { id, status });
+    await axios.put(`${backend_url}/leaves/status`, { id, status });
     loadLeaves();
   };
 

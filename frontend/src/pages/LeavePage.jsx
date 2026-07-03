@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { backend_url } from "../common";
 
 function LeavePage() {
   const [leaveType, setLeaveType] = useState("Casual");
@@ -13,7 +14,7 @@ function LeavePage() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/leaves/apply", {
+      await axios.post(`${backend_url}/leaves/apply`, {
         employee_id: localStorage.getItem("userId"),
         leave_type: leaveType,
         start_date: startDate,
