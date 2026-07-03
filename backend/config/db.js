@@ -1,6 +1,8 @@
-require('dotenv').config();
-const fs = require('fs');
-const mysql = require('mysql2');
+require("dotenv").config();
+
+const fs = require("fs");
+const path = require("path");
+const mysql = require("mysql2");
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -8,13 +10,12 @@ const db = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
-    ssl:
-        process.env.DB_SSL_MODE === "true" ?
-            {
-                ca: fs.readFileSync(path.join(__dirname, "ca.pem"))
-            }
-            : undefined
-})
+
+    ssl: process.env.DB_SSL_MODE === "true"
+        ? {
+            ca: fs.readFileSync(path.join(__dirname, "ca.pem"))
+        }
+        : undefined
+});
 
 module.exports = db;
-
