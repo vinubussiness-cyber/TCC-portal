@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
+import { backend_url } from "../../common";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);

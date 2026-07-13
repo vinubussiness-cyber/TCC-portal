@@ -4,6 +4,7 @@ import API from "../../api/axios.js";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import { FiDownload } from "react-icons/fi";
+import { backend_url } from "../../common.js";
 
 function AttendanceDashboard() {
   const [records, setRecords] = useState([]); 

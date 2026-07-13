@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
+import { backend_url } from "../../common";
 
 function EmployeeDetails() {
   const { id } = useParams();
