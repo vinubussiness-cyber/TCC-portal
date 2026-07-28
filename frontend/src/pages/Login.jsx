@@ -55,12 +55,12 @@ function Login() {
 
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">Username or Email</label>
             <input
               className="form-input"
-              type="email"
-              placeholder="you@company.com"
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Username or email"
+              onChange={(e) => setLogin(e.target.value)}
             />
           </div>
 
