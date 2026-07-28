@@ -5,7 +5,7 @@ import { backend_url } from "../common";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ function Login() {
 
     try {
       const res = await axios.post(`${backend_url}/auth/login`, {
-        email,
+        login,
         password,
       });
 

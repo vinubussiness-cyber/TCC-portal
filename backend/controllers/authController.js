@@ -2,11 +2,11 @@ const db = require('../config/db');
 const jwt = require('jsonwebtoken')
 
 const login = (req,res) => {
-    const {email,password}= req.body;
+    const {login,password}= req.body;
 
-    const sql = 'SELECT * FROM users WHERE email = ?';
+    const sql = 'SELECT * FROM users WHERE email = ? OR username = ?'; //login in by username or mail
 
-    db.query(sql, [email], (err, result) => {
+    db.query(sql, [login, login], (err, result) => {
         if (err) {
             return res.status(500).json(err);
         }
@@ -41,6 +41,7 @@ const login = (req,res) => {
             user: {
                 id: user.id,
                 name: user.name,
+                username:user.username,
                 role: user.role
             }
         });
