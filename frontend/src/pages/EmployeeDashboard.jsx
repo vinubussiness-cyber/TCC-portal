@@ -1,8 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import API from "../api/axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import DashboardCard from "../components/DashboardCard";
+import logo from "../assets/TCC-logo.jpeg"
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { FaRegClock } from "react-icons/fa";
+
 import {
   FiClock,
   FiList,
@@ -33,6 +40,9 @@ function EmployeeDashboard() {
 
   const employeeId = localStorage.getItem("userId");
 
+  const [alertShown, setAlertShown] = useState(false);
+  const [updatesLoaded, setUpdatesLoaded] = useState(false);
+
   const loadStats = async () => {
     try {
       const res = await API.get(`/dashboard/employee/${employeeId}`);
@@ -46,8 +56,11 @@ function EmployeeDashboard() {
     try {
       const res = await API.get(`/work-updates/today/${employeeId}`);
       setUpdates(res.data);
+      setUpdatesLoaded(true)
+
     } catch (err) {
       console.log(err);
+      setUpdatesLoaded(true)
     }
   };
 
@@ -71,6 +84,7 @@ function EmployeeDashboard() {
       setUpdateDetails("");
       setStatus("In Progress");
       setShowUpdate(false);
+      setShowUpdate(false)
 
       await loadUpdates();
     } catch (err) {
@@ -82,39 +96,203 @@ function EmployeeDashboard() {
   useEffect(() => {
     loadStats();
     loadUpdates();
+
+    if ("Notification" in window) {  //to pop browser notification
+
+        Notification.requestPermission();
+
+    }
   }, []);
 
   useEffect(() => {
-    if (!stats.todayLogin) return;
+
+    if (!stats.todayLogin || !updatesLoaded)
+        return;
 
     const interval = setInterval(() => {
-      const login = new Date(stats.todayLogin);
-      const now = new Date();
-      const diff = now - login;
 
-      const hrs = Math.floor(diff / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
+        const login =
+            new Date(stats.todayLogin);
 
-      setWorkingTime(`${hrs}h ${mins}m`);
+        const now =
+            new Date();
 
-      const elapsed = Math.floor(diff / 1000);
-      const remaining = 7200 - (elapsed % 7200);
+        const diff =
+            now - login;
 
-      const h = String(Math.floor(remaining / 3600)).padStart(2, "0");
-      const m = String(Math.floor((remaining % 3600) / 60)).padStart(2, "0");
-      const s = String(remaining % 60).padStart(2, "0");
+        const hrs =
+            Math.floor(diff / 3600000);
 
-      setCountdown(`${h}:${m}:${s}`);
+        const mins =
+            Math.floor(
+                (diff % 3600000) / 60000
+            );
+
+        setWorkingTime(
+            `${hrs}h ${mins}m`
+        );
+
+        const elapsed =
+            Math.floor(diff / 1000);
+
+        const TWO_HOURS = 7200;
+
+        const currentCycle =
+            Math.floor(
+                elapsed / TWO_HOURS
+            );
+
+        const elapsedInCycle =
+            elapsed % TWO_HOURS;
+
+        const remaining =
+            TWO_HOURS - elapsedInCycle;
+
+
+        // Check whether update was already submitted
+        const cycleAlreadySubmitted =
+            updates.some((update) => {
+
+                const updateTime =
+                    new Date(
+                        update.created_at
+                    );
+
+                const updateElapsed =
+                    Math.floor(
+                        (updateTime - login) /
+                        1000
+                    );
+
+                const updateCycle =
+                    Math.floor(
+                        updateElapsed /
+                        TWO_HOURS
+                    );
+
+                return (
+                    updateCycle ===
+                    currentCycle
+                );
+
+            });
+
+
+        // Trigger notification only if
+        // this 2-hour period has no update
+
+        if (
+            currentCycle > 0 &&
+            !cycleAlreadySubmitted &&
+            currentCycle !==
+                lastAlertCycle.current
+        ) {
+
+            playNotificationSound();
+
+            showToast();
+
+            showBrowserNotification();
+
+            setShowUpdate(true);
+
+            lastAlertCycle.current =
+                currentCycle;
+        }
+
+
+        const h =
+            String(
+                Math.floor(
+                    remaining / 3600
+                )
+            ).padStart(2, "0");
+
+        const m =
+            String(
+                Math.floor(
+                    (remaining % 3600) / 60
+                )
+            ).padStart(2, "0");
+
+        const s =
+            String(
+                remaining % 60
+            ).padStart(2, "0");
+
+        setCountdown(
+            `${h}:${m}:${s}`
+        );
+
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [stats.todayLogin]);
+
+    return () =>
+        clearInterval(interval);
+
+  }, [
+     stats.todayLogin,
+      updatesLoaded,
+      updates
+    ]);
 
   const getStatusBadgeClass = (itemStatus) => {
     if (itemStatus === "Completed") return "badge badge-completed";
     if (itemStatus === "Blocked") return "badge badge-blocked";
     return "badge badge-progress";
   };
+
+
+  const playNotificationSound = () => {
+    const audio = new Audio('/sounds/notification.mp3')
+    audio.play().catch((err)=>{
+        console.log('Notification sound blocked:', err)
+    })
+  }
+
+  const showBrowserNotification = () => {
+    if(
+      'Notification' in window &&
+      Notification.permission === 'granted') {
+      new Notification(
+        'THE CAD COMPANY',
+        {
+          body:
+            '2 Hours completed. \nPlease submit your work update.',
+          icon: logo
+        }
+      );
+    }
+  }
+
+  // toast notification 
+ 
+
+  const showToast = () => {
+
+    toast.info(
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <FaRegClock size={24} color="#f59e0b" />
+                <div>
+                    <strong>2 Hours Completed</strong>
+                    <br />
+                    Please submit your work update.
+                </div>
+        </div>,
+        {
+            position: "top-right",
+            autoClose: 6000,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            closeButton: true,
+            theme: "dark"
+        }
+        );
+
+    };
+
+  const lastAlertCycle = useRef(-1);
 
   return (
     <div className="app-layout">
@@ -239,8 +417,23 @@ function EmployeeDashboard() {
                   </div>
                 </div>
               </div>
+              
+              {/* toast notification */}
+              <ToastContainer
+                  position="top-right"
+                  autoClose={6000}
+                  theme="dark"
+                  closeOnClick
+                  pauseOnHover
+                  draggable
+                  newestOnTop
+                  style={{top:100}}
+              />
+
             </div>
 
+            
+            {/* update details */}
             <div className="content-panel updates-list">
               <h2>Today's Updates</h2>
               <hr />
@@ -326,6 +519,7 @@ function EmployeeDashboard() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

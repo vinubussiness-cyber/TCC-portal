@@ -43,7 +43,7 @@ function Sidebar() {
     { to: "/employee/my-leaves", label: "My Leave Requests", icon: FiUser },
   ];
 
-  const links = role === "admin" ? adminLinks : employeeLinks;
+  const links = role === "admin" ? adminLinks : employeeLinks;   //selecting link heading based on roles
 
   return (
     <aside className="sidebar">

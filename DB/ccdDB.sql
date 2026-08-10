@@ -5,6 +5,7 @@ use tcc_employee_portal;
 create table users(
 	id int auto_increment primary key,
     name varchar(100) not null,
+    username varchar(50) unique not null,
     email varchar(150) unique not null,
     password VARCHAR(30) not null,
     role ENUM('admin','employee') DEFAULT 'employee',
@@ -13,6 +14,8 @@ create table users(
     status ENUM ('active','inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+alter table users add column username varchar(50) null after name;
 
 CREATE TABLE attendence(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -125,7 +128,28 @@ select * from leaves_table;
 
 select * from tasks;
 
+select * from users;
 
 describe attendance;
 
-SELECT User, Host FROM mysql.user;
+
+
+INSERT INTO users (name,email,password,role)
+values('Joshua','Joshua', 'TCC2026Joshua','employee'),
+('Sundar','Sundar', 'TCC2026Sundar','employee'),
+('Lokesh','Lokesh', 'TCC2026Lokesh','employee'),
+('Dhanesh','Dhanesh', 'TCC2026Dhanesh','employee');
+
+
+UPDATE users
+SET username = CONCAT(
+	UPPER(LEFT(REPLACE(name, ' ',''),1)),
+	SUBSTRING(REPLACE(name,'',' '),2)
+)
+WHERE username IS NULL;
+
+-- modify to take username in table 
+alter table users 
+modify username varchar(50) not null,
+add unique(username)
+
