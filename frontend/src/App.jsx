@@ -17,6 +17,7 @@ import EmployeeDetails from './pages/admin/ExployeeDetails';
 import ProtectedRoute from './components/ProtectedRoute';
 import DailyReportsDashboard from './pages/admin/DailyReportsDashboard';
 import WorkUpdatesDashboard from './pages/admin/WorkUpdatesDashboard';
+import Claims from './pages/Claims';
 
 function App() {
 
@@ -105,6 +106,16 @@ function App() {
             path='/admin/work-updates'
             element={<ProtectedRoute><WorkUpdatesDashboard/></ProtectedRoute>}
           ></Route>
+
+          <Route
+            path='/admin/claims'
+            element={<ProtectedRoute><Claims/></ProtectedRoute>}
+          />
+          
+          <Route
+            path='/employee/claims'
+            element={<ProtectedRoute><Claims/></ProtectedRoute>}
+          />
 
         </Routes>
     </BrowserRouter>

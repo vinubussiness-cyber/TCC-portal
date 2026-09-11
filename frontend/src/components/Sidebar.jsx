@@ -11,6 +11,7 @@ import {
   FiList,
   FiUser,
 } from "react-icons/fi";
+import { FcMoneyTransfer } from "react-icons/fc";
 import logo from "../assets/TCC-logo.jpeg";
 
 function Sidebar() {
@@ -32,6 +33,7 @@ function Sidebar() {
     { to: "/admin/leaves", label: "Leave Requests", icon: FiCalendar },
     { to: "/admin/task-monitor", label: "Task Monitor", icon: FiActivity },
     { to: "/admin/attendance", label: "Attendance", icon: FiClipboard },
+    { to: '/admin/claims', label: "Claims", icon: FcMoneyTransfer }
   ];
 
   const employeeLinks = [
@@ -41,6 +43,7 @@ function Sidebar() {
     { to: "/employee/leaves", label: "Leaves", icon: FiCalendar },
     { to: "/employee/attendance", label: "Attendance", icon: FiClipboard },
     { to: "/employee/my-leaves", label: "My Leave Requests", icon: FiUser },
+    { to: '/employee/claims', label: "Claims", icon: FcMoneyTransfer }
   ];
 
   const links = role === "admin" ? adminLinks : employeeLinks;   //selecting link heading based on roles
