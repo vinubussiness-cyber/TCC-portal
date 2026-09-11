@@ -3,7 +3,7 @@ import React from 'react'
 // export default function Claims() {
 //   return (
 //     <div>Claims</div>
-//   )
+//   )  
 // }
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
