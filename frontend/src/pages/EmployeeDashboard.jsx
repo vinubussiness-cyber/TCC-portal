@@ -23,7 +23,7 @@ function EmployeeDashboard() {
   const [stats, setStats] = useState({
     workingHours: 0,
     assignedTasks: 0,
-    pendingTasks: 0,
+    pendingTasks: 0, 
     approvedLeaves: 0,
     reportSubmitted: 0,
     todayLogin: null,
